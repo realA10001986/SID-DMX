@@ -27,3 +27,6 @@ Pin mapping:
   J12: 
   - 5V from ESP32 dev board pin 
   - GND from any of the screw terminals
+
+
+Some some mysterious reason, the SID sometimes experiences transmission errors which go away when an SD card is in the SID's card slot.
