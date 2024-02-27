@@ -25,5 +25,5 @@ Pin mapping:
  </table>
  
   J12: 
-  5V from ESP32 dev board pin 
-  GND from any of the screw terminals
+  - 5V from ESP32 dev board pin 
+  - GND from any of the screw terminals
