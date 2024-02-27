@@ -15,8 +15,8 @@
 
 // These must not contain any characters other than
 // '0'-'9', 'A'-'Z', '(', ')', '.', '_', '-' or space
-#define SID_VERSION "V0.1"
-#define SID_VERSION_EXTRA "FEB232024"
+#define SID_VERSION "V0.3"
+#define SID_VERSION_EXTRA "FEB272024"
 
 
 #define SID_DBG              // debug output on Serial
@@ -60,8 +60,8 @@
 #define SPI_SCK_PIN       18 
 
 // DMX
-#define DMX_TRANSMIT 13
-#define DMX_RECEIVE  14
+#define DMX_TRANSMIT 14
+#define DMX_RECEIVE  35 //13
 #define DMX_ENABLE   32
 
 #endif
