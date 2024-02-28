@@ -134,6 +134,7 @@ void dmx_setup()
     int personality_count = 1;
 
     Serial.println(F("SID DMX version " SID_VERSION " " SID_VERSION_EXTRA));
+    Serial.println(F("(C) 2024 Thomas Winischhofer (A10001986)"));
 
     float x = (float)(TT_SQ_LN - 1) + 0.9;
     for(int i = 0; i < 256; i++) {
@@ -153,10 +154,6 @@ void dmx_setup()
  * loop
  *
  *********************************************************************************/
-
-#ifdef SID_DBG
-int cnt = 0;
-#endif
 
 int zeroCnt = 0;
 
@@ -181,13 +178,6 @@ void dmx_loop()
             dmx_read(dmxPort, data, packet.size);
       
             if(!data[0]) {
-              
-                #ifdef SID_DBG1
-                cnt++;
-                if(cnt % 10 == 0) {
-                    Serial.printf("DMX packet (size %d) %x %x / %x %x\n", packet.size, data[SID_BASE], data[SID_BASE + 1], cache[0], cache[1]);
-                }
-                #endif
 
                 for(int i = SID_BASE; i < SID_BASE+DMX_CHANNELS; i++) {
                    if(data[i]) {
@@ -214,8 +204,11 @@ void dmx_loop()
                         memcpy(cache, data + SID_BASE, DMX_CHANNELS);
                     }
                 }
+                
             } else {
+              
                 Serial.printf("Unrecognized start code %d (0x%02x)", data[0], data[0]);
+                
             }
           
         } else {
@@ -330,10 +323,9 @@ static void setDisplay(int base)
     */
 }
 
-void showWaitSequence(/*bool force*/)
+void showWaitSequence()
 {
     // Show a "wait" symbol
-    //if(force) sid.on();
     sid.clearDisplayDirect();
     sid.drawLetterAndShow('&', 0, 8);
 }
@@ -343,8 +335,11 @@ void endWaitSequence()
     sid.clearDisplayDirect();
 }
 
-
 void showCopyError()
 {
-    // TODO
+    for(int i = 0; i < 10; i++) {
+        digitalWrite(IR_FB_PIN, HIGH);
+        delay(250);
+        digitalWrite(IR_FB_PIN, LOW);
+    }
 }
