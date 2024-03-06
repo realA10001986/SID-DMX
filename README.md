@@ -17,6 +17,10 @@ This repository holds a firmware for CircuitSetup's Status Indicator Display (SI
 
 Requires "esp_dmx" library (someweisguy) v4.0.1 or later.
 
+### Firmware update
+
+To update the firmware without Arduino IDE/PlatformIO, copy a pre-compiled binary using the filename "sidfw.bin" to a FAT32 formatted SD card, insert this card into the SID, and power up. The SID will show an egg timer while it updates its firmware. Afterward it will reboot.
+
 ### Hardware: Pin mapping
 
 The SID control board has a row of solder pads next to the ESP32 dev board. All below pins are accessible on this row of solder pads:
