@@ -21,9 +21,9 @@ Requires "esp_dmx" library (someweisguy) v4.0.1 or later.
 
 The SID control board has a row of solder pads next to the ESP32 dev board. All below pins are accessible on this row of solder pads:
 
-![SID](https://github.com/realA10001986/SID-DMX/assets/76924199/f25383e9-41f2-437d-9568-4d49db811f59)
+![SID](https://github.com/realA10001986/SID-DMX/assets/76924199/2a595c14-b8a1-4972-9907-6ba399776696)
 
-The pin numbers listed below refer to above picture:
+The pin numbers listed below in SID column refer to above picture:
 
 <table>
     <tr>
