@@ -1,10 +1,23 @@
 
-# **&#9888; Not for public release**
+**&#9888; Not for public release**
 
-Requires "esp_dmx" library (someweisguy) v4.0.1
-(Ignore compiler warnings)
+# Firmware for SID - DMX controlled
 
-Pin mapping:
+This repository holds a firmware for CircuitSetup's Status Indicator Display (SID) which allows control through DMX. It is designed to work the the [Sparkfun LED-to-DMX](https://www.sparkfun.com/products/15110) shield.
+
+### DMX channels
+
+<table>
+    <tr><td>DMX channel</td><td>Function</td></tr>
+    <tr><td>34</td><td>Master brightness (0-255)</td></tr>
+    <tr><td>35</td><td>Effect ramp up</td></tr>
+</table>
+
+### Build information
+
+Requires "esp_dmx" library (someweisguy) v4.0.1 or later.
+
+### Hardware: Pin mapping
 <table>
     <tr>
      <td align="center">SID</td><td align="center">LED-to-DMX shield</td>
