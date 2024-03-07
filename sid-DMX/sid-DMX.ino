@@ -53,7 +53,6 @@
  *
  * - Install required libraries. In the Arduino IDE, go to "Tools" -> "Manage Libraries" 
  *   and install the following libraries:
- *   - ArduinoJSON (>= 6.19): https://arduinojson.org/v6/doc/installation/
  *   - esp_dmx (>= 4.0.1): https://github.com/someweisguy/esp_dmx
  *
  * - Download the complete firmware source code:
@@ -65,7 +64,6 @@
  * - Go to "Sketch" -> "Upload" to compile and upload the firmware to your ESP32 board.
  *
  */
-
 
 #include "sid_global.h"
 
@@ -88,7 +86,6 @@ void setup()
     settings_setup();
     dmx_setup();
 }
-
 
 void loop()
 {

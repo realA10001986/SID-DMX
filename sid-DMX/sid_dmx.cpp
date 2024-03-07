@@ -24,7 +24,7 @@ sidDisplay sid(0x74, 0x72);
 int modeOfOperation = 1;
 
 bool        strictMode = false;      // config
-static bool useGPSS    = false;     // config
+static bool useGPSS    = false;      // config
 
 uint16_t    idleMode   = 0;
 
@@ -54,7 +54,7 @@ static int  TTClrBar = 0;
 static int  TTClrBarInc = 1;
 static int  TTBarCnt = 0;
 static bool TTBri = false;
-static bool usingGPSS   = false;
+static bool usingGPSS = false;
 static int  gpsSpeed = 0;
 static int  prevGPSSpeed = -2;
 
@@ -70,19 +70,26 @@ dmx_packet_t packet;
 uint8_t data[DMX_PACKET_SIZE];
 
 #define DMX_ADDRESS   34
-#define DMX_CHANNELS  2   //10
+#define DMX_CHANNELS  12
 
+#define DMX_VERIFY_CHANNEL 46    // must be set to DMX_VERIFY_VALUE
+#define DMX_VERIFY_VALUE   100   
+
+#if defined(DMX_USE_VERIFY) && (DMX_ADDRESS < DMX_VERIFY_CHANNEL)
+#define DMX_SLOTS_TO_RECEIVE (DMX_VERIFY_CHANNEL + 1)
+#else
 #define DMX_SLOTS_TO_RECEIVE (DMX_ADDRESS + DMX_CHANNELS)
+#endif
 
 // DMX footprint
 #define SID_BASE DMX_ADDRESS
 
-unsigned long powerupMillis;
+unsigned long powerupMillis = 0;
 
 uint8_t cache[DMX_CHANNELS];
 
 static bool          dmxIsConnected = false;
-static unsigned long lastDMXpacket;
+static unsigned long lastDMXpacket = 0;
 
 #define TT_SQF_LN 51
 static const uint8_t ttledseqfull[TT_SQF_LN][10] = {
@@ -236,7 +243,7 @@ static const uint8_t staleledseq[STT_SQ_LN][10] = {
 
 static uint8_t efxRanges[256] = { 0 };
 
-static void setDisplay(int base);
+static bool setDisplay(int base);
 static void showIdle(bool forceUpdate = false, bool freezeBaseLine = false);
 
 
@@ -327,13 +334,8 @@ void dmx_setup()
  *
  *********************************************************************************/
 
-int zeroCnt = 0;
-unsigned long lastIteration = 0;
-
 void dmx_loop() 
 {
-    bool isAllZero = true;
-    bool doUpdate = true;
     bool forceUpdate = false;
                     
     if(dmx_receive_num(dmxPort, &packet, DMX_SLOTS_TO_RECEIVE, 0)) {
@@ -351,32 +353,26 @@ void dmx_loop()
       
             if(!data[0]) {
 
-                for(int i = SID_BASE; i < SID_BASE+DMX_CHANNELS; i++) {
-                   if(data[i]) {
-                        isAllZero = false;
-                        break;
-                   }
-                }
-                if(isAllZero) {
-                    #ifdef SID_DBG 
-                    Serial.printf("Zero packet: %d (%d)\n", packet.size, zeroCnt);
-                    #endif
-                    if(zeroCnt < 2) {
-                        zeroCnt++;
-                        doUpdate = false;
-                    } else {
-                        zeroCnt = 0;
-                    }
-                } else {
-                    zeroCnt = 0;
-                }
-                if(doUpdate) {
+                #ifdef DMX_USE_VERIFY
+                if(data[DMX_VERIFY_CHANNEL] == DMX_VERIFY_VALUE) {
+                #endif
+                    
                     if(memcmp(cache, data + SID_BASE, DMX_CHANNELS)) {
-                        setDisplay(SID_BASE);
-                        //forceUpdate = true;
+                        forceUpdate = setDisplay(SID_BASE);
                         memcpy(cache, data + SID_BASE, DMX_CHANNELS);
+                        #ifdef SID_DBG
+                        Serial.println("setDisplay called");
+                        #endif
                     }
+
+                #ifdef DMX_USE_VERIFY
+                } else {
+
+                    Serial.printf("Bad verification value on channel %d: %d (should be %d)\n", 
+                          DMX_VERIFY_CHANNEL, data[DMX_VERIFY_CHANNEL], DMX_VERIFY_VALUE);
+                  
                 }
+                #endif
                 
             } else {
               
@@ -397,7 +393,9 @@ void dmx_loop()
         break;
     case 1:
     case 2:
-        showIdle(forceUpdate);
+        if(gpsSpeed >= 0) {
+            showIdle(forceUpdate);
+        }
         break;
     }
 
@@ -416,101 +414,65 @@ void dmx_loop()
  *
  *********************************************************************************/
 
-
 /*
- * 0 = ch1 Master brightness (0-255) 
- * 1 = ch2 "Effect ramp up" (0-255)
+ * 0 = ch1:   Master brightness (0-255; 0=off; 1-255=darkest-brightest) 
+ * 1 = ch2:   "Effect ramp up" (0-255); 0=off (use ch3-12); 1=idle ???; 2-255 ramp up to tt
+ * 2 = ch3:   Col 1 (left-most) (0-255) |
+ * 3 = ch4:   Col 2 (0-255)
+ * 4 = ch5:   Col 3 (0-255)
+ * 5 = ch6:   Col 4 (0-255)
+ * 6 = ch7:   Col 5 (0-255)
+ * 7 = ch8:   Col 6 (0-255)
+ * 8 = ch9:   Col 7 (0-255)
+ * 9 = ch10:  Col 8 (0-255)
+ * 10 = ch11: Col 9  (0-255)
+ * 11 = ch12: Col 10 (right-most) (0-255)
  * 
- * 
- Old mapping:
-  0 = ch1:  Col 1 (left-most) (0-255) |
-  1 = ch2:  Col 2                     |
-  2 = ch3:  Col 3                     | Disregarded if ch 11 
-  3 = ch4:  Col 4                     | is non-zero
-  4 = ch5:  Col 5                     | 
-  5 = ch6:  Col 6                     |
-  6 = ch7:  Col 7                     |
-  7 = ch8:  Col 8                     |
-  8 = ch9:  Col 9                     |
-  9 = ch10: Col 10                    |
- 10 = ch11: Movie pattern idx (0-255)
- 11 = ch12: Master brightness (0-255) 
-*/
+ */
 
-static void setDisplay(int base)
-{
-    int mbri = data[base + 0] / 15;
-    int eru = data[base + 1];
-
-    #ifdef SID_DBG
-    Serial.printf("%x %x\n", data[base + 0], data[base + 1]);
-    #endif
-
-    if(mbri > 16) mbri = 16;
+static bool setDisplay(int base)
+{ 
+    bool forceupd = false;
+    int  mbri = data[base + 0];
+    int  eru = data[base + 1];
     
     if(mbri) {
-        switch(modeOfOperation) {
-        case 0:
+        if(eru) {
+            switch(modeOfOperation) {
+            case 0:
+                for(int i = 0; i < 10; i++) {
+                    sid.drawBarWithHeight(i, staleledseq[efxRanges[eru]][i]);
+                }
+                sid.show();
+                break;
+            case 1:
+            case 2:
+                gpsSpeed = (int)((float)eru / 2.87);
+                if(gpsSpeed > 75) forceupd = true;
+                #ifdef SID_DBG
+                Serial.printf("gpsSpeed %d\n", gpsSpeed);
+                #endif
+                break;
+            }
+        } else {
+            // manual pattern selection
             for(int i = 0; i < 10; i++) {
-                sid.drawBarWithHeight(i, staleledseq[efxRanges[eru]][i]);
+                sid.drawBarWithHeight(i, data[base + 2 + i] / 12);
             }
             sid.show();
-            break;
-        case 1:
-        case 2:
-            gpsSpeed = (int)((float)eru / 2.87);
-            break;
+            gpsSpeed = -1;
+            prevGPSSpeed = -2;
         }
     }
 
     if(mbri) {    // master bri
         sid.on();
-        sid.setBrightness(mbri - 1);
+        sid.setBrightness(mbri / 16);
     } else {
         sid.off();
     }
 
-
-    /*
-    if(fullScale) {
-        
-        for(int i = base + 0; i < 10; i++) {
-            data[i] /= 12;
-            // range check done in sid class
-        }
-
-        data[base + 10] /= TT_SQ_LN;
-        if(data[base + 10] >= TT_SQ_LN) data[base + 10] = TT_SQ_LN;
-
-        data[base + 11] /= 15; // Brightness
-        if(data[base + 11] == 255) data[base + 11]--;
-        
-    }
-
-    mbri = data[base + 11];
-    
-    if(data[base + 9]) {
-        // Movie pattern
-        if(mbri) {    // master bri
-            for(int i = 0; i < 10; i++) {
-                sid.drawBarWithHeight(i, ttledseq[data[base + 11]][i]);
-            }
-        }
-    } else {
-        // manual pattern selection
-        for(int i = 0; i < 10; i++) {
-            sid.drawBarWithHeight(i, data[base + i]);
-        }
-        sid.show();
-    }
-
-    if(mbri) {    // master bri
-        sid.on();
-        sid.setBrightness(mbri - 1);
-    } else {
-        sid.off();
-    }
-    */
+    return forceupd;
 }
 
 
@@ -610,7 +572,7 @@ static void showBaseLine(int variation, uint16_t flags)
                 int temp1 = sid.getBrightness(), temp2 = 3;
                 if(temp1 >= 4) temp1 -= 2;
                 else { temp1 = 2; temp2 = 0; }
-                sid.setBrightnessDirect((esp_random() % temp1) + temp2); //       13) + 3);
+                sid.setBrightnessDirect((esp_random() % temp1) + temp2);
             }
         } 
 
@@ -670,8 +632,8 @@ static void showIdle(bool forceUpdate, bool freezeBaseLine)
                 if(gpsSpeed == prevGPSSpeed) {
                     if(strictBaseLine < 5) {
                         strictBaseLine += (esp_random() % 5);
-                    } else if(strictBaseLine > TT_SQF_LN - 4) {
-                        // no modify
+                    } else if(strictBaseLine > TT_SQF_LN - 9) {
+                        // no modify at > 75mph
                     } else {
                         strictBaseLine += (((esp_random() % 5)) - 2);
                     }
