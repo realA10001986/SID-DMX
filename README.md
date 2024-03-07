@@ -9,8 +9,18 @@ This repository holds a firmware for CircuitSetup's Status Indicator Display (SI
 
 <table>
     <tr><td>DMX channel</td><td>Function</td></tr>
-    <tr><td>34</td><td>Master brightness (0=off; 255=brightest)</td></tr>
+    <tr><td>34</td><td>Master brightness (0=off; 1-255=darkest-brightest)</td></tr>
     <tr><td>35</td><td>Effect ramp up</td></tr>
+    <tr><td>36</td><td>Column 1 height</td></tr>
+    <tr><td>37</td><td>Column 2 height</td></tr>
+    <tr><td>38</td><td>Column 3 height</td></tr>
+    <tr><td>39</td><td>Column 4 height</td></tr>
+    <tr><td>40</td><td>Column 5 height</td></tr>
+    <tr><td>41</td><td>Column 6 height</td></tr>
+    <tr><td>42</td><td>Column 7 height</td></tr>
+    <tr><td>43</td><td>Column 8 height</td></tr>
+    <tr><td>44</td><td>Column 9 height</td></tr>
+    <tr><td>45</td><td>Column 10 height</td></tr>
 </table>
 
 ### Build information
