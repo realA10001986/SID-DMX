@@ -10,7 +10,7 @@ This repository holds a firmware for CircuitSetup's Status Indicator Display (SI
 <table>
     <tr><td>DMX channel</td><td>Function</td></tr>
     <tr><td>34</td><td>Master brightness (0=off; 1-255=darkest-brightest)</td></tr>
-    <tr><td>35</td><td>Effect ramp up</td></tr>
+    <tr><td>35</td><td>Auto-animate (0=off, use ch36-45; 1-255=lowest-highest</td></tr>
     <tr><td>36</td><td>Column 1 height</td></tr>
     <tr><td>37</td><td>Column 2 height</td></tr>
     <tr><td>38</td><td>Column 3 height</td></tr>
@@ -22,6 +22,8 @@ This repository holds a firmware for CircuitSetup's Status Indicator Display (SI
     <tr><td>44</td><td>Column 9 height</td></tr>
     <tr><td>45</td><td>Column 10 height</td></tr>
 </table>
+
+If DMX_USE_VERIFY is defined in sid_global.h (which it is by default), a DMX packet verfifier is implemented. Channel 46 must be at value 100, otherwise the DMX packet is ignored.
 
 ### Build information
 
