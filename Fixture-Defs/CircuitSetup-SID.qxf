@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE FixtureDefinition>
+<FixtureDefinition xmlns="http://www.qlcplus.org/FixtureDefinition">
+ <Creator>
+  <Name>Q Light Controller Plus</Name>
+  <Version>4.12.7</Version>
+  <Author>Thomas Winischhofer</Author>
+ </Creator>
+ <Manufacturer>CircuitSetup</Manufacturer>
+ <Model>SID</Model>
+ <Type>Effect</Type>
+ <Channel Name="Master brightness">
+  <Group Byte="1">Intensity</Group>
+  <Capability Min="0" Max="255">Master brightness (0 - 100%)</Capability>
+ </Channel>
+ <Channel Name="Effect ramp up">
+  <Group Byte="1">Effect</Group>
+  <Capability Min="0" Max="255">Effect</Capability>
+ </Channel>
+ <Channel Name="Col 1">
+  <Group Byte="1">Effect</Group>
+  <Capability Min="0" Max="255">Column height</Capability>
+ </Channel>
+ <Channel Name="Col 2">
+  <Group Byte="1">Effect</Group>
+  <Capability Min="0" Max="255">Column height</Capability>
+ </Channel>
+ <Channel Name="Col 3">
+  <Group Byte="1">Effect</Group>
+  <Capability Min="0" Max="255">Column height</Capability>
+ </Channel>
+ <Channel Name="Col 4">
+  <Group Byte="1">Effect</Group>
+  <Capability Min="0" Max="255">Column height</Capability>
+ </Channel>
+ <Channel Name="Col 5">
+  <Group Byte="1">Effect</Group>
+  <Capability Min="0" Max="255">Column height</Capability>
+ </Channel>
+ <Channel Name="Col 6">
+  <Group Byte="1">Effect</Group>
+  <Capability Min="0" Max="255">Column height</Capability>
+ </Channel>
+ <Channel Name="Col 7">
+  <Group Byte="1">Effect</Group>
+  <Capability Min="0" Max="255">Column height</Capability>
+ </Channel>
+ <Channel Name="Col 8">
+  <Group Byte="1">Effect</Group>
+  <Capability Min="0" Max="255">Column height</Capability>
+ </Channel>
+ <Channel Name="Col 9">
+  <Group Byte="1">Effect</Group>
+  <Capability Min="0" Max="255">Column height</Capability>
+ </Channel>
+ <Channel Name="Col 10">
+  <Group Byte="1">Effect</Group>
+  <Capability Min="0" Max="255">Column height</Capability>
+ </Channel>
+ <Mode Name="Standard mode">
+  <Channel Number="0">Master brightness</Channel>
+  <Channel Number="1">Effect ramp up</Channel>
+  <Channel Number="2">Col 1</Channel>
+  <Channel Number="3">Col 2</Channel>
+  <Channel Number="4">Col 3</Channel>
+  <Channel Number="5">Col 4</Channel>
+  <Channel Number="6">Col 5</Channel>
+  <Channel Number="7">Col 6</Channel>
+  <Channel Number="8">Col 7</Channel>
+  <Channel Number="9">Col 8</Channel>
+  <Channel Number="10">Col 9</Channel>
+  <Channel Number="11">Col 10</Channel>
+ </Mode>
+ <Physical>
+  <Bulb Type="" Lumens="0" ColourTemperature="0"/>
+  <Dimensions Weight="0" Width="0" Height="0" Depth="0"/>
+  <Lens Name="Other" DegreesMin="0" DegreesMax="0"/>
+  <Focus Type="Fixed" PanMax="0" TiltMax="0"/>
+  <Technical PowerConsumption="0" DmxConnector="5-pin"/>
+ </Physical>
+</FixtureDefinition>
