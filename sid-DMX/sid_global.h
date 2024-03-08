@@ -13,8 +13,8 @@
  ***                          Version Strings                          ***
  *************************************************************************/
 
-#define SID_VERSION "V0.92"
-#define SID_VERSION_EXTRA "MAR072024"
+#define SID_VERSION "V0.93"
+#define SID_VERSION_EXTRA "MAR082024"
 
 #define SID_DBG              // debug output on Serial
 
