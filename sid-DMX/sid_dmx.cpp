@@ -17,13 +17,8 @@
 // The SID display object
 sidDisplay sid(0x74, 0x72);
 
-// Mode:
-// 0: eru slider goes through strict tt sequence (50 steps)
-// 1: eru is like GPS speed on original firmware (0-88; strict; including slight randomization)
-// 2: eru is like GPS speed on original firmware (0-88; non-strict; including slight randomization)
-// 3: eru is like GPS speed on original firmware (30-88; strict; including slight randomization)
-// 4: eru is like GPS speed on original firmware (30-88; non-strict; including slight randomization)
-int modeOfOperation = 3;
+// See global.h
+int modeOfOperation = ERU_MODE;
 
 bool        strictMode = false;      // config
 static bool useGPSS    = false;      // config

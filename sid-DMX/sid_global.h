@@ -23,6 +23,21 @@
 // be DMX_VERIFY_VALUE for a packet to be accepted.
 #define DMX_USE_VERIFY
 
+// Mode for "Effect ramp up" slider at DMX values 1 through 255:
+// 0: slider goes through strict tt sequence (51 steps, stale)
+// 1: slider works like GPS speed on original firmware 
+//    (0-88mph; strict; including slight randomization up 75mph)
+// 2: like 1, but non-strict
+// 3: slider works like GPS speed on original firmware 
+//    (30-88mph; strict; including slight randomization up 75mph)
+// 4: like 3, but non-strict
+//
+// For 1 and 3: LEDs are slightly randomized at 2Hz; if slider level 
+// is beyond 75mph (=DMX value 215 in mode 1, and 200 in mode 3), 
+// no more randomization is performed, since remaining steps are
+// meant to resemble the authentic time travel sequence.
+#define ERU_MODE 3
+
 
 /*************************************************************************
  ***                             GPIO pins                             ***
