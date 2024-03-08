@@ -23,7 +23,7 @@ This repository holds a firmware for CircuitSetup's Status Indicator Display (SI
     <tr><td>45</td><td>Column 10 height</td></tr>
 </table>
 
-If DMX_USE_VERIFY is defined in sid_global.h (which it is by default), a DMX packet verfifier is implemented. Channel 46 must be at value 100, otherwise the DMX packet is ignored.
+If DMX_USE_VERIFY is defined in sid_global.h (which it is by default), a DMX packet verifier is implemented. Channel 46 must be at value 100, otherwise the DMX packet is ignored.
 
 ### Build information
 
