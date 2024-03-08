@@ -16,7 +16,7 @@
 #define SID_VERSION "V0.93"
 #define SID_VERSION_EXTRA "MAR082024"
 
-#define SID_DBG              // debug output on Serial
+//#define SID_DBG              // debug output on Serial
 
 // If this is uncommented, the firmware uses channel DMX_VERIFY_CHANNEL
 // for packet verification. The value of this channel must, at all times,
