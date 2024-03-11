@@ -23,7 +23,7 @@ This repository holds a firmware for CircuitSetup's Status Indicator Display (SI
     <tr><td>45</td><td>Column 10 height</td></tr>
 </table>
 
-If DMX_USE_VERIFY is defined in sid_global.h, a DMX packet verifier is implemented. Channel 46 must be at value 100, otherwise the DMX packet is ignored. This feature is disabled by default, because it hinders a global black out - unless your DMX controller can exclude channels from global black out.
+If DMX_USE_VERIFY is defined in sid_global.h, a simple DMX packet verifier filters out malformed/corrupt DMX packets. For a packet to be considered valid, channel 46 must be at value 100. If this channel is set to any other value, the packet is ignored. This feature is disabled by default, because it hinders a global black out. If your DMX controller can exclude channels from "black out" (or this function is not to be used), and you experience flicker, you can try to activate this packet verifier.
 
 ### Build information
 
