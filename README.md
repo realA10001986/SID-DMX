@@ -1,7 +1,7 @@
 
 # Firmware for SID - DMX controlled
 
-This repository holds a firmware for CircuitSetup's Status Indicator Display (SID) which allows control through DMX. It is designed to work using the [Sparkfun LED-to-DMX](https://www.sparkfun.com/products/15110) shield. (DMX control is also available for [Time Circuits Display](https://github.com/realA10001986/Time-Circuits-Display-DMX) and [Flux Capacitor](https://github.com/realA10001986/Flux-Capacitor-DMX))
+This repository holds a firmware for CircuitSetup's [Status Indicator Display](https://circuitsetup.us/product/delorean-time-machine-status-indicator-display-sid/) (SID) kit which allows control through DMX. It is designed to work using the [Sparkfun LED-to-DMX](https://www.sparkfun.com/products/15110) shield. (DMX control is also available for [Time Circuits Display](https://github.com/realA10001986/Time-Circuits-Display-DMX) and [Flux Capacitor](https://github.com/realA10001986/Flux-Capacitor-DMX))
 
 ### DMX channels
 
