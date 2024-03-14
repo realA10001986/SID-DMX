@@ -77,6 +77,6 @@ The pin numbers listed below in SID column refer to above picture:
     </tr>
  </table>
 
-![DMXshield](https://github.com/realA10001986/SID-DMX/assets/76924199/1783dbd9-4378-41cf-90a9-2809d8f59a17)
+![DMXshield-SID](https://github.com/realA10001986/SID-DMX/assets/76924199/e52c31c2-751e-43fa-9b70-20f75fabfe16)
 
 Some some mysterious reason, the SID sometimes experiences transmission errors which go away when an SD card is in the SID's card slot.
