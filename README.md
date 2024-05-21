@@ -41,7 +41,7 @@ Requires [esp_dmx](https://github.com/someweisguy/esp_dmx) library v4.0.1 or lat
 
 The SID control board has a row of solder pads next to the ESP32 dev board. All below pins are accessible on this row of solder pads:
 
-![SID](https://github.com/realA10001986/SID-DMX/assets/76924199/2a595c14-b8a1-4972-9907-6ba399776696)
+<img src="img/SID.png">
 
 The pin numbers listed below in SID column refer to above picture:
 
@@ -75,6 +75,6 @@ The pin numbers listed below in SID column refer to above picture:
     </tr>
  </table>
 
-![DMXshield-SID](https://github.com/realA10001986/SID-DMX/assets/76924199/e52c31c2-751e-43fa-9b70-20f75fabfe16)
+<img src="img/DMXshield-SID.jpg">
 
 For some mysterious reason, the SID sometimes experiences transmission errors which go away when an SD card is in the SID's card slot.
